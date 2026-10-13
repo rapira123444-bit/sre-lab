@@ -1,0 +1,78 @@
+"""
+SRE Auto-Heal Script
+Находит упавшие поды в Kubernetes и перезапускает их.
+"""
+
+import time
+import logging
+from kubernetes import client, config
+
+logging.basicConfig(
+	level=logging.INFO,
+	format='%(asctime)s [%(levelname)s] %(message)s',
+	handlers=[
+		logging.FileHandler("autoheal.log"),
+		logging.StreamHandler()
+	]
+)
+log = logging.getLogger(__name__)
+
+PROBLEM_STATES = ["CrashLoopBackOff", "Error", "ImagePullBackOff", "ErrImagePull"]
+
+def load_config():
+	"""Загружает конфиг Kubernetes."""
+	try:
+		config.load_kube_config()
+		log.info("Конфиг kubeconfig загружен")
+	except Exception:
+		config.load_incluster_config()
+		log.info("Конфиг incluster загружен")
+
+def get_problem_pods(v1):
+	"""Возвращает список проблемных подов."""
+	pods = v1.list_pod_for_all_namespaces(watch=False)
+	problem_pods = []
+	for pod in pods.items:
+		if pod.status.container_statuses:
+			for cs in pod.status.container_statuses:
+				if cs.state and cs.state.waiting:
+					if cs.state.waiting.reason in PROBLEM_STATES:
+						problem_pods.append({
+							"namespace": pod.metadata.namespace,
+							"name": pod.metadata.name,
+							"reason": cs.state.waiting.reason
+						})
+	return problem_pods
+
+def heal_pods(v1, problem_pods):
+	"""Удаляет проблемные поды (Kubernetes пересоздает их)."""
+	for pod in problem_pods:
+		try:
+			log.warning(f"Удаляю под {pod ['namespace']}/{pod['name']} (причина: {pod['reason']})")
+			v1.delete_namespaced_pod(
+				name=pod['name'],
+				namespace=pod['namespace']
+			)
+			log.info(f" Под {pod['name']} удален, Kubernetes пересоздаст его")
+		except Exception as e:
+			log.error(f"Не удалось удалить {pod['name']}: {e}")
+
+def main():
+	log.info("=== SRE Auto-Heal запущен ===")
+	load_config()
+	v1 = client.CoreV1Api()
+
+	problem_pods = get_problem_pods(v1)
+	if not problem_pods:
+		log.info("Проблемных подов не найдено")
+		return
+
+	log.warning(f"Найдено {len(problem_pods)} проблемных подов:")
+	for p in problem_pods:
+		log.warning(f" - {p['namespace']}/{p['name']} ({p['reason']})")
+
+	heal_pods(v1, problem_pods)
+	log.info("=== SRE Auto-Heal завершон ===")
+
+if __name__ == "__main__":
+	main()

@@ -1,0 +1,35 @@
+2026-10-13 09:15:18,545 [INFO] === SRE Auto-Heal запущен ===
+2026-10-13 09:15:18,548 [INFO] Конфиг kubeconfig загружен
+2026-10-13 09:15:21,914 [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPSConnection(host='192.168.49.2', port=8443): Failed to establish a new connection: [Errno 113] No route to host")': /api/v1/pods?watch=false
+2026-10-13 09:15:24,986 [WARNING] Retrying (Retry(total=1, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPSConnection(host='192.168.49.2', port=8443): Failed to establish a new connection: [Errno 113] No route to host")': /api/v1/pods?watch=false
+2026-10-13 09:15:28,058 [WARNING] Retrying (Retry(total=0, connect=None, read=None, redirect=None, status=None)) after connection broken by 'NewConnectionError("HTTPSConnection(host='192.168.49.2', port=8443): Failed to establish a new connection: [Errno 113] No route to host")': /api/v1/pods?watch=false
+2026-10-13 09:36:38,133 [INFO] === SRE Auto-Heal запущен ===
+2026-10-13 09:36:38,135 [INFO] Конфиг kubeconfig загружен
+2026-10-13 09:36:38,417 [INFO] Проблемных подов не найдено
+2026-10-13 09:42:14,867 [INFO] === SRE Auto-Heal запущен ===
+2026-10-13 09:42:14,869 [INFO] Конфиг kubeconfig загружен
+2026-10-13 09:42:15,158 [INFO] Проблемных подов не найдено
+2026-10-13 09:43:00,233 [INFO] === SRE Auto-Heal запущен ===
+2026-10-13 09:43:00,235 [INFO] Конфиг kubeconfig загружен
+2026-10-13 09:43:00,515 [WARNING] Найдено 1 проблемных подов:
+2026-10-13 09:43:00,516 [WARNING]  - default/broken-pod (ImagePullBackOff)
+2026-10-13 09:43:00,516 [ERROR] Не удалось удалить broken-pod: 'peason'
+2026-10-13 09:43:00,516 [INFO] === SRE Auto-Heal завершон ===
+2026-10-13 09:47:49,084 [INFO] === SRE Auto-Heal запущен ===
+2026-10-13 09:47:49,085 [INFO] Конфиг kubeconfig загружен
+2026-10-13 09:47:49,371 [WARNING] Найдено 2 проблемных подов:
+2026-10-13 09:47:49,371 [WARNING]  - default/bloken-app-69dc4c7f67-qnkl7 (ImagePullBackOff)
+2026-10-13 09:47:49,372 [WARNING]  - default/broken-pod (ImagePullBackOff)
+2026-10-13 09:47:49,372 [ERROR] Не удалось удалить bloken-app-69dc4c7f67-qnkl7: 'peason'
+2026-10-13 09:47:49,372 [ERROR] Не удалось удалить broken-pod: 'peason'
+2026-10-13 09:47:49,372 [INFO] === SRE Auto-Heal завершон ===
+2026-10-13 09:52:30,115 [INFO] === SRE Auto-Heal запущен ===
+2026-10-13 09:52:30,117 [INFO] Конфиг kubeconfig загружен
+2026-10-13 09:52:30,397 [WARNING] Найдено 2 проблемных подов:
+2026-10-13 09:52:30,397 [WARNING]  - default/bloken-app-69dc4c7f67-qnkl7 (ImagePullBackOff)
+2026-10-13 09:52:30,397 [WARNING]  - default/broken-pod (ImagePullBackOff)
+2026-10-13 09:52:30,397 [WARNING] Удаляю под default/bloken-app-69dc4c7f67-qnkl7 (причина: ImagePullBackOff)
+2026-10-13 09:52:30,403 [INFO]  Под bloken-app-69dc4c7f67-qnkl7 удален, Kubernetes пересоздаст его
+2026-10-13 09:52:30,403 [WARNING] Удаляю под default/broken-pod (причина: ImagePullBackOff)
+2026-10-13 09:52:30,407 [INFO]  Под broken-pod удален, Kubernetes пересоздаст его
+2026-10-13 09:52:30,408 [INFO] === SRE Auto-Heal завершон ===
