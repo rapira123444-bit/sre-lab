@@ -1,0 +1,40 @@
+name: SRE Lab CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checlout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install kubernetes
+
+      - name: Lint Python scripts
+        run: |
+          python3 -m py_compile 03-python-autoheal/autoheal.ry
+
+      - name: Check Bash scripts
+        run: |
+          bash -n 02-bash/check_k8s.sh
+
+      - name: Validate Terraform
+        run: |
+          wget -o terraform.zip https://releases.hashicorp.com/terraform/1.9.8/terraform_1.9.8_linux_amd64.zip
+          unzip terraform.zip
+          sudo mv terraform /usr/local/bin/
+          cd 04-terraform && terraform init -backend=false && terraform validate
+          cd ../05-terraform-k8s && terraform init -backend=false && terraform validata
