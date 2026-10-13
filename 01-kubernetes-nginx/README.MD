@@ -79,3 +79,26 @@ Python-скрипт autoheal.ry
 - Воспроизводимость окружений
 - Хранение инфроструктуры в Git
 - Автоматизация через CI/CD
+
+Лабораторная работа 5: CI/CD (GitHub Actioms)
+
+Что настроено
+- Репозитарий на GitHub: https://github.com/rapira123444-bit/sre-lab
+- CI-пайплайн '.github/workflows/ci.ymi':
+  - Checkout кода
+  - Установка Python 3.11
+  - Установка зависимости (kubernetes)
+  - Линт Python-скриптов (py_compile)
+  - Проверка Bash-скриптов (bash -n)
+  - Setup Terraform 1.9.8 (официальный action HashiCorp)
+  - terraform init + validate для 04-terraform
+  - terraform init + validate для 05-terraform-k8s
+
+Результат
+Все шаги проходят успешно при каждом 'git push' в main.
+
+Чему научился
+- Работа с Git и GitHub (init, add, commit, push, токены)
+- Настройка CI через YAML
+- Использование готовых GitHub Actions
+- Валидация IaC-кода в плайплайне
